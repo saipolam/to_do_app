@@ -1,49 +1,49 @@
-import React, { useState } from "react";
-import "./App.css";
-import TodoItem from "./components/TodoItem";
+import React, { useState } from 'react';
+import './App.css';
 
 function App() {
-  const [task, setTask] = useState("");
+  // State to store the list of tasks
   const [tasks, setTasks] = useState([]);
+  const [task, setTask] = useState('');
 
+  // Function to handle adding a task
   const addTask = () => {
-    if (task.trim()) {
-      setTasks([...tasks, { text: task, completed: false }]);
-      setTask("");
+    if (task) {
+      setTasks([...tasks, task]);  // Add the new task to the list
+      setTask('');  // Clear the input field after adding the task
     }
   };
 
-  const toggleComplete = (index) => {
-    const newTasks = [...tasks];
-    newTasks[index].completed = !newTasks[index].completed;
-    setTasks(newTasks);
-  };
-
-  const deleteTask = (index) => {
-    const newTasks = tasks.filter((_, i) => i !== index);
-    setTasks(newTasks);
+  // Function to handle removing a task
+  const removeTask = (index) => {
+    const newTasks = tasks.filter((_, taskIndex) => taskIndex !== index);
+    setTasks(newTasks);  // Remove the task from the list
   };
 
   return (
-    <div className="app">
-      <h1>To-Do List</h1>
-      <input
-        type="text"
-        value={task}
-        onChange={(e) => setTask(e.target.value)}
-        placeholder="Add a new task"
-      />
-      <button onClick={addTask}>Add</button>
-      <div className="todo-list">
-        {tasks.map((task, index) => (
-          <TodoItem
-            key={index}
-            task={task}
-            toggleComplete={() => toggleComplete(index)}
-            deleteTask={() => deleteTask(index)}
-          />
-        ))}
-      </div>
+    <div className="App">
+      <header className="App-header">
+        <h1>To-Do List</h1>
+        
+        {/* Input field for adding tasks */}
+        <input 
+          type="text" 
+          value={task} 
+          onChange={(e) => setTask(e.target.value)} 
+          placeholder="Add a new task"
+        />
+        <button onClick={addTask}>Add Task</button>
+
+        {/* Display the list of tasks */}
+        <ul>
+          {tasks.map((task, index) => (
+            <li key={index}>
+              {task}
+              <button onClick={() => removeTask(index)}>Remove</button>
+            </li>
+          ))}
+        </ul>
+      </header>
     </div>
   );
 }
